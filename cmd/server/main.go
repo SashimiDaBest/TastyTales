@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"fmt"
-	"config"
+	"github.com/SashimiDaBest/TastyTales/config"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
