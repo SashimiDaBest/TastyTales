@@ -1,0 +1,26 @@
+{
+  "name": "tastytales",
+  "version": "1.0.0",
+  "description": "http://localhost:8080/",
+  "main": "index.js",
+  "scripts": {
+    "start-backend": "go run ./cmd/server/main.go",
+    "build-backend": "go build -o bin/app ./cmd/server/main.go",
+    "test-backend": "go test ./...",
+    "clean": "rm -rf bin",
+    "lint": "golangci-lint run ./...",
+    "format": "gofmt -w .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SashimiDaBest/TastyTales.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SashimiDaBest/TastyTales/issues"
+  },
+  "homepage": "https://github.com/SashimiDaBest/TastyTales#readme"
+}

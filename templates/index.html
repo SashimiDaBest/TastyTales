@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTMX with Go</title>
+    <script src="https://unpkg.com/htmx.org"></script>
+    <script type="module" src="/static/js/main.js"></script>
+    <script src="/static/js/main.js" defer></script>
+    <script>
+        document.getElementById("myButton").addEventListener("click", () => {
+            console.log("Inline script works!");
+        });
+    </script>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>HTMX with Go Example</h1>
+
+    <button hx-get="/partial" hx-target="#response" id="myButton">Load Partial Content</button>
+    <div id="response"></div>
+</body>
+</html>
