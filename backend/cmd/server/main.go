@@ -9,9 +9,49 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-)
 
+	// "database/sql"
+	// "github.com/lib/pq"
+)
+// http://localhost:8080/
+const (
+	host     = "localhost"
+	port     = 5432
+	user     = "postgres"
+	password = "your-password"
+	dbname   = "calhounio_demo"
+  )
+  
 func main() {
+
+	// psqlInfo := fmt.Sprintf("host=%s port=%d user=%s " + 
+	// "password=%s dbname=%s sslmode=disable", 
+	// host, port, user, password, dbname)
+
+	/*
+	host - The host to connect to
+	port - The port to bind to
+	user - The user to sign in as
+	password - The user’s password
+	dbname - The name of the database to connect to
+	sslmode - Whether or not to use SSL
+	*/
+
+
+	// db, err := sql.Open("postgres", psqlInfo)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// defer db.Close()
+
+
+	// err = db.Ping()
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	fmt.Println("Successfully connected to database!")
+
 	// Load environment variables from .env file
 	config.LoadEnv()
 

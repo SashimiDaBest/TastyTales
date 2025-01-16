@@ -39,3 +39,11 @@ project/
 │   └── form.go
 └── go.mod               # Go modules file
 ```
+
+
+brew services start postgresql
+brew services restart postgresql@14
+
+
+Start the Live Reload Server: Run ```air``` in the terminal:
+It watches for changes in your source files and automatically rebuilds and restarts your application.
