@@ -19,3 +19,9 @@ func GetEnv(key, fallback string) string {
 	}
 	return fallback
 }
+
+
+/*
+github.com/joho/godotenv
+	A third-party package that loads environment variables from a .env file into the runtime environment.
+*/

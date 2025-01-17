@@ -1,69 +1,58 @@
 package main
 
 import (
+	_ "database/sql"
+	_ "fmt"
 	"html/template"
+	_ "log"
 	"net/http"
+	_ "os"
 
-	"fmt"
-	"github.com/SashimiDaBest/TastyTales/config"
+	_ "github.com/SashimiDaBest/TastyTales/config"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-
-	// "database/sql"
-	// "github.com/lib/pq"
+	_ "github.com/lib/pq"
 )
-// http://localhost:8080/
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "your-password"
-	dbname   = "calhounio_demo"
-  )
   
 func main() {
-
-	// psqlInfo := fmt.Sprintf("host=%s port=%d user=%s " + 
-	// "password=%s dbname=%s sslmode=disable", 
-	// host, port, user, password, dbname)
-
 	/*
-	host - The host to connect to
-	port - The port to bind to
-	user - The user to sign in as
-	password - The user’s password
-	dbname - The name of the database to connect to
-	sslmode - Whether or not to use SSL
-	*/
+	// Load environment variables from .env file
+	config.LoadEnv()
 
+	// Retrieve required environment variables
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	dbname := os.Getenv("DB_NAME")
+	appPort := os.Getenv("APP_PORT")
 
-	// db, err := sql.Open("postgres", psqlInfo)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// defer db.Close()
+	if appPort == "" {
+		appPort = "3000" // Fallback to default port
+	}
 
+	// PostgreSQL connection string
+	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 
-	// err = db.Ping()
-	// if err != nil {
-	// 	panic(err)
-	// }
+	// Open a connection to the database
+	db, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		log.Fatalf("Error opening database: %v", err)
+	}
+	defer db.Close()
+
+	// Verify the connection to the database
+	err = db.Ping()
+	if err != nil {
+		log.Fatalf("Error connecting to database: %v", err)
+	}
 
 	fmt.Println("Successfully connected to database!")
 
 	// Load environment variables from .env file
 	config.LoadEnv()
-
-	// Retrieve environment variables
-	port := config.GetEnv("APP_PORT", "3000")
-	dbUser := config.GetEnv("DB_USER", "default_user")
-	dbPassword := config.GetEnv("DB_PASSWORD", "default_password")
-
-	fmt.Println("Port:", port)
-	fmt.Println("Database User:", dbUser)
-	fmt.Println("Database Password:", dbPassword)
-
+	*/
 	// Create a new router
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
@@ -78,8 +67,36 @@ func main() {
 
 	// Start server
 	http.ListenAndServe(":8080", r)
+	/*
+	// Start the server
+	log.Printf("Starting server on port %s...", appPort)
+	err = http.ListenAndServe(":"+appPort, r)
+	if err != nil {
+		log.Fatalf("Server failed to start: %v", err)
+	}
+	*/
 }
 
+// Serve the main page
+func serveIndex(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("templates/index.html"))
+	err := tmpl.Execute(w, nil)
+	if err != nil {
+		http.Error(w, "Error rendering template", http.StatusInternalServerError)
+	}
+}
+
+// Serve partial content for HTMX requests
+func servePartial(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	err := template.Must(template.ParseFiles("templates/partial.html")).Execute(w, nil)
+	if err != nil {
+		http.Error(w, "Error rendering template", http.StatusInternalServerError)
+	}
+}
+
+
+/*
 // Serve the main page
 func serveIndex(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("templates/index.html"))
@@ -91,3 +108,4 @@ func servePartial(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	template.Must(template.ParseFiles("templates/partial.html")).Execute(w, nil)
 }
+*/
